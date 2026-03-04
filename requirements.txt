@@ -1,3 +1,5 @@
 scrapy
 bs4
 langdetect
+nltk
+pymorphy3
