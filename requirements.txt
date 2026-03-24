@@ -3,3 +3,4 @@ bs4
 langdetect
 nltk
 pymorphy3
+numpy
