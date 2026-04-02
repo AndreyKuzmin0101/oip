@@ -4,3 +4,4 @@ langdetect
 nltk
 pymorphy3
 numpy
+flask

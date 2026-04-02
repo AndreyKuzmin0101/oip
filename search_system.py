@@ -14,7 +14,7 @@ class VectorSearchEngine:
     def __init__(self, index_dir: str, mode: str):
         self.mode = mode
         self.index_dir = os.path.join(index_dir, mode)
-        self.documents = self._load_document_names()
+        self.documents = self._load_document_urls()
         self.term_idf = {}
         self.term_index = {}
         self.doc_vectors = {}
@@ -22,12 +22,13 @@ class VectorSearchEngine:
 
         self._load_index()
 
-    def _load_document_names(self):
+    def _load_document_urls(self):
         docs = {}
-        for filename in os.listdir(PAGES_DIR):
-            if filename.endswith('.html'):
-                doc_id = filename.split('-')[0]
-                docs[doc_id] = filename
+        with open('index.txt', 'r', encoding='utf-8') as f:
+            for line in f:
+                if ',' in line:
+                    doc_id, url = line.strip().split(',', 1)
+                    docs[doc_id] = url
         return docs
 
     def _load_index(self):

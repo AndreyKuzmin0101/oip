@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Search</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Semantic Search</h1>
+
+    <div class="mode-selector">
+        <div class="left">
+            <span class="mode-title">Search mode</span>
+            <span id="modeLabel">{{ mode }}</span>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="modeToggle" {% if mode == 'lemmas' %}checked{% endif %}>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <p class="mode-description">
+        lemmas — semantic search | tokens — exact match
+    </p>
+
+    <form method="POST" class="search-form">
+        <input 
+            type="text" 
+            name="query" 
+            value="{{ query }}" 
+            placeholder="Search papers, topics, models..." 
+            required
+        >
+        <input type="hidden" name="mode" id="modeInput" value="{{ mode }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <div class="results">
+            <h3>{{ results|length }} results</h3>
+            <ul>
+                {% for url, score in results %}
+                    <li>
+                        <span class="score">{{ "%.3f"|format(score) }}</span>
+                        <a href="{{ url }}" target="_blank">{{ url }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% elif query %}
+        <div class="results empty">
+            <p>No results for "<strong>{{ query }}</strong>"</p>
+        </div>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
